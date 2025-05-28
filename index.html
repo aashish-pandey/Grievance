@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Simple Sheet Submit</title>
+</head>
+<body>
+  <h2>Send a Message</h2>
+  <textarea id="msg" rows="4" cols="50" placeholder="Type your message..."></textarea><br><br>
+  <button onclick="submitMessage()">Submit</button>
+  <p id="status"></p>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwxoz7eIPmLy-3Hj-igSnwMR9KCqam8t7O0Wr6PSckWDIYq3zE_hD4OX-jEDyOcVxc/exec"; // 👈 Replace with your Web App URL
+
+    function submitMessage() {
+      const msg = document.getElementById("msg").value;
+      const formData = new FormData();
+      formData.append("message", msg);
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: formData
+      })
+      .then(res => {
+        document.getElementById("status").innerText = "Message submitted!";
+        document.getElementById("msg").value = "";
+      })
+      .catch(() => {
+        document.getElementById("status").innerText = "Submission failed.";
+      });
+    }
+  </script>
+</body>
+</html>
