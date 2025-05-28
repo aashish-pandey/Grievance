@@ -1,35 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Simple Sheet Submit</title>
-</head>
-<body>
-  <h2>Send a Message</h2>
-  <textarea id="msg" rows="4" cols="50" placeholder="Type your message..."></textarea><br><br>
-  <button onclick="submitMessage()">Submit</button>
-  <p id="status"></p>
+<html>
+ <head>
+    <base target="_top">
+    <style>
+/* 🎀 Body with bow background and overlay */
+body {
+  margin: 0;
+  padding: 0;
+  background: url("bow.png");
+  background-size: 400px;
+  background-repeat: repeat;
+  background-position: center;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  overflow: hidden;
+}
 
-  <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwxoz7eIPmLy-3Hj-igSnwMR9KCqam8t7O0Wr6PSckWDIYq3zE_hD4OX-jEDyOcVxc/exec"; // 👈 Replace with your Web App URL
+/* 💙 Soft blue overlay */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(208, 240, 255, 0.85); /* soft overlay */
+  z-index: 0;
+}
 
-    function submitMessage() {
-      const msg = document.getElementById("msg").value;
-      const formData = new FormData();
-      formData.append("message", msg);
+/* 🧸 Main box (on top of overlay) */
+.container {
+  position: relative;
+  z-index: 1;
+  background-color: rgba(255, 240, 245, 0.94);
+  padding: 3rem 2rem;
+  border-radius: 30px;
+  box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+  max-width: 480px;
+  width: 90%;
+  text-align: center;
+  animation: floatUp 0.6s ease-out;
+}
 
-      fetch(scriptURL, {
-        method: "POST",
-        body: formData
-      })
-      .then(res => {
-        document.getElementById("status").innerText = "Message submitted!";
-        document.getElementById("msg").value = "";
-      })
-      .catch(() => {
-        document.getElementById("status").innerText = "Submission failed.";
-      });
+/* 🪄 Float animation */
+@keyframes floatUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+    .bow-top {
+      font-size: 2.5rem;
+      margin-bottom: -0.5rem;
+      animation: bounce 2s infinite;
     }
-  </script>
-</body>
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    h2 {
+      color: #ff69b4;
+      margin-bottom: 1.2rem;
+    }
+
+    .with-bow {
+      position: relative;
+      margin-top: 1.2em;
+    }
+
+    .with-bow::before {
+      content: "🎀";
+      position: absolute;
+      left: -1.6em;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.4em;
+    }
+
+    select, textarea {
+      width: 90%;
+      padding: 0.8em 1em;
+      border: 2px solid #ffc0cb;
+      border-radius: 20px;
+      font-size: 1rem;
+      background-color: #fff;
+      outline: none;
+      box-shadow: 0 0 8px rgba(255,182,193,0.3);
+      transition: all 0.2s ease-in-out;
+    }
+
+    select:hover, textarea:hover {
+      box-shadow: 0 0 12px rgba(255,182,193,0.5);
+    }
+
+    textarea {
+      height: 120px;
+      resize: none;
+    }
+
+    textarea::placeholder {
+      font-style: italic;
+      color: #aaa;
+    }
+
+    #submitBtn {
+      font-size: 3.5rem;
+      margin-top: 1.5em;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+      color: #ff69b4;
+      text-shadow: 1px 1px 5px rgba(255, 105, 180, 0.5);
+    }
+
+    #submitBtn:hover {
+      transform: scale(1.4);
+    }
+
+    #status {
+      margin-top: 1.2em;
+      font-weight: bold;
+      color: #d63384;
+    }
+    </style>
+  </head>
+  <body>
+  <div class="container">
+    <div class="bow-top">🎀</div>
+
+    <h2>Hey Mishti 🎀 How Are You Feeling Today?</h2>
+
+    <div class="with-bow">
+      <select id="mood" onchange="updateButton()">
+        <option value="Grievance">💔 Grievance</option>
+        <option value="Happy">❤️ Happy</option>
+        <option value="Other">🐼 Just Panda</option>
+      </select>
+    </div>
+
+    <div class="with-bow">
+      <textarea id="msg" placeholder="Write your message here..."></textarea>
+    </div>
+
+    <button id="submitBtn" onclick="submitMessage()">💔</button>
+
+    <p id="status"></p>
+  </div>
+
+    <script>
+      function updateButton() {
+        const mood = document.getElementById("mood").value;
+        const btn = document.getElementById("submitBtn");
+
+        if (mood === "Grievance") {
+          btn.textContent = "💔";
+        } else {
+          btn.textContent = "❤️";
+        } 
+      }
+
+      function submitMessage() {
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyUazqo1rbQwVubTR_gufumGLoF5EuaOVQmshoZ40t4pcRa2xQAUNLWhXQfzpSJFyx8/exec";
+        const msg = document.getElementById("msg").value;
+        const form = new FormData();
+        form.append("message", msg);
+
+        fetch(scriptURL, {
+          method: "POST",
+          body: form
+        })
+        .then(res => res.text())
+        .then(text => {
+          document.getElementById("status").innerText = "Server Response: " + text;
+        })
+        .catch(() => {
+          document.getElementById("status").innerText = "Submission failed.";
+        });
+      }
+    </script>
+  </body>
 </html>
+
