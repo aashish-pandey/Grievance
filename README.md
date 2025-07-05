@@ -45,7 +45,7 @@ It lets her:
 
 ## ✨ Demo
 
-> Coming soon, once someone lets me borrow their girlfriend for testing.
+Check out the live version here 👉 [View Demo](https://aashish-pandey.github.io/Grievance/)
 
 ---
 
